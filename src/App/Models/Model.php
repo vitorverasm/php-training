@@ -11,18 +11,39 @@ class Model
     public function __construct()
     {
         $this->config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/lib/config.ini');
-        $this->initializeDB();
-        $this->connectDB();
+        $this->conn = $this->connectDB();
+        $this->initializeTable();
     }
-    public function initializeDB()
-    {
-        // inicializa o banco de dados de tarefas, com as colunas propostas
+    public function initializeTable()
+    {   
+        $dbName = $this->config['dbname'];
+        $tableName = $this->config['tablename'];
+        $sql = "
+        CREATE TABLE IF NOT EXISTS $tableName (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+            name VARCHAR(30) NOT NULL,
+            description VARCHAR(100) NOT NULL,
+            deadline DATETIME,
+            priority INT,
+            status TINYINT(1)
+            );
+        ";
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+            die();
+        }
     }
     public function connectDB()
     {
         try {
-            $this->conn = new PDO("mysql:host=" . $this->config['host'] . ";dbname=" . $this->config['dbname'], $this->config['username'], $this->config['password']);
+            $conn = new PDO("mysql:host=" . $this->config['host'] . ";dbname=" . $this->config['dbname'], $this->config['username'], $this->config['password']);
             echo 'Conected!';
+            return $conn;
         } catch (PDOException $exc) {
             echo $exc->getMessage();
         }
