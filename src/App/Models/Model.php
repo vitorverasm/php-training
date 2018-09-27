@@ -11,15 +11,14 @@ class Model
     public function __construct()
     {
         $this->config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . '/lib/config.ini');
+        // $this->tableName = $this->config['tablename'];
         $this->conn = $this->connectDB();
         $this->initializeTable();
     }
     public function initializeTable()
-    {   
-        $dbName = $this->config['dbname'];
-        $tableName = $this->config['tablename'];
+    {
         $sql = "
-        CREATE TABLE IF NOT EXISTS $tableName (
+        CREATE TABLE IF NOT EXISTS {$this->config['tablename']} (
             id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
             name VARCHAR(30) NOT NULL,
             description VARCHAR(100) NOT NULL,
@@ -31,9 +30,7 @@ class Model
         try {
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
-        }
-        catch (PDOException $e)
-        {
+        } catch (PDOException $e) {
             echo $e->getMessage();
             die();
         }
@@ -59,6 +56,19 @@ class Model
     public function createTask($data)
     {
         // CREATE: recebe um array de dados da tarefa do controller e cria uma nova linha no banco com as informacoes.
+        $sql = "
+        INSERT INTO :table (name, description, deadline, priority, status)
+        VALUES (:name, :description, :deadline, :priority, :status)
+        ";
+        try {
+            $stmt = $this->conn->bindParam(':table', $this->config['tablename'], PDO::PARAM_STR);
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            echo "ok";
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die();
+        }
     }
     public function deleteTask($id)
     {
