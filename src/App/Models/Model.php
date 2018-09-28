@@ -61,8 +61,20 @@ class Model
         VALUES (:name, :description, :deadline, :priority, :status)
         ";
         try {
-            $stmt = $this->conn->bindParam(':table', $this->config['tablename'], PDO::PARAM_STR);
-            $stmt = $this->conn->prepare($sql);
+            $pdo = $this->conn::getInstance();
+            $stmt = $pdo->prepare($sql);
+
+            $a = $stmt->bindParam(':table', $this->config['tablename'], PDO::PARAM_STR);
+            var_dump($data['name']);
+            $b = $stmt->bindParam(':name', $data['name'], PDO::PARAM_STR);
+            var_dump($data['description']);
+            $c = $stmt->bindParam(':description', $data['description'], PDO::PARAM_STR);
+            var_dump($data['deadline']);
+            $d = $stmt->bindParam(':deadline', $data['deadline'], PDO::PARAM_STR);
+            var_dump($data['priority']);
+            $e = $stmt->bindParam(':priority', $data['priority'], PDO::PARAM_INT);
+            var_dump($data['status']);
+            $f = $stmt->bindParam(':status', $data['status'], PDO::PARAM_INT);
             $stmt->execute();
             echo "ok";
         } catch (PDOException $e) {
