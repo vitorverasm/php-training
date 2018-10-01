@@ -38,13 +38,12 @@ class Model
     {
         try {
             $conn = new PDO("mysql:host=" . $this->config['host'] . ";dbname=" . $this->config['dbname'] . ";charset=utf8", $this->config['username'], $this->config['password']);
-            echo 'Conected!';
             return $conn;
         } catch (PDOException $exc) {
             echo $exc->getMessage();
         }
     }
-    public function showAllTasks()
+    public function showAll()
     {
         $sql = "SELECT * FROM {$this->config['tablename']};";
         try {
@@ -55,7 +54,7 @@ class Model
         }
 
     }
-    public function showTask($id)
+    public function show($id)
     {
         $sql = "SELECT * FROM {$this->config['tablename']} WHERE id = :id LIMIT 1";
         try {
@@ -70,7 +69,7 @@ class Model
             echo $exc->getMessage();
         }
     }
-    public function createTask($data)
+    public function insert($data)
     {
         $sql = "
         INSERT INTO {$this->config['tablename']} (name, description, deadline, priority, status)
@@ -86,12 +85,12 @@ class Model
                 ':priority' => $data['priority'],
                 ':status' => $data['status'],
             ];
-            $stmt->execute($values);
+            return $stmt->execute($values);
         } catch (PDOException $e) {
             echo $exc->getMessage();
         }
     }
-    public function deleteTask($id)
+    public function delete($id)
     {
         $sql = "DELETE FROM {$this->config['tablename']} WHERE id=:id";
 
@@ -100,12 +99,12 @@ class Model
             $values = [
                 ':id' => $id
             ];
-            $stmt->execute($values);
+            return $stmt->execute($values);
         } catch (PDOException $e) {
             echo $exc->getMessage();
         }
     }
-    public function updateTask($id, $data)
+    public function update($id, $data)
     {
         $sql = "UPDATE {$this->config['tablename']} SET name=:name, description=:description, deadline=:deadline, priority=:priority, status=:status WHERE id=:id;";
 
@@ -119,7 +118,7 @@ class Model
                 ':status' => $data['status'],
                 ':id' => $id
             ];
-            $stmt->execute($values);
+            return $stmt->execute($values);
         } catch (PDOException $e) {
             echo $exc->getMessage();
         }

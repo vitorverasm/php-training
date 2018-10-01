@@ -1,12 +1,12 @@
 <?php
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
-use App\Models\Model;
+use App\Controllers\Controller;
 
 require 'vendor/autoload.php';
 
-$json = '{"name":"Reunião 2","description":"Reunião com o setor","deadline":"2018-09-28 21:30:00","priority":4, "status":1}';
+$json = '{"name":"Almoço","description":"Almoço na casa da Ana.","deadline":"2018-10-02 12:00:00","priority":1, "status":0}';
 $data = json_decode($json, true);
+$c = new Controller();
 
-$m = new Model();
-$m->createTask($data);
+$c->createTask($json);
