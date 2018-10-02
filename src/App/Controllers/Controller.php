@@ -9,17 +9,26 @@ class Controller
     private $model;
     public function __construct()
     {
-        $model = new Model();
+        $this->model = new Model();
     }
 
     public function createTask($json)
     {
         $data = json_decode($json, true);
         $result = $this->model->insert($data);
-        if ($result){
-            echo "erro";
-        }else{
-            echo "deu certo insere";
+        if ($result) {
+            return "Tarefa criada com sucesso";
+        } else {
+            return "Falha na criação da tarefa";
+        }
+    }
+    public function showAllTasks()
+    {
+        $result = $this->model->showAll();
+        if (!empty($result)) {
+            return $result;
+        } else {
+            return "Nenhuma tarefa criada";
         }
     }
 }
