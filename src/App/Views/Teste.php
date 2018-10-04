@@ -2,6 +2,7 @@
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,28 +15,34 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">All</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Done</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pending</a>
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-            </nav>
-        </div>
+        <form action="" method="POST">
+            <div>
+                <br>Task title: <input type="text" name="name" value="Enter the task name">
+            </div>
+            <div>
+                <br>Description: <input type="text" name="description" value="Describe what to do">
+            </div>
+            <div>
+                <br>Deadline: <input type="datetime-local" name="deadline" value="<? echo date('Y-m-d'); ?>T09:00">
+            </div>
+            <div>
+                <br>Priority: 
+                <select name="priority">
+                    <option value="4">Very high</option>
+                    <option value="3">High</option>
+                    <option value="2">Medium</option>
+                    <option value="1">Low</option>
+                </select>
+            </div>
+            <div>
+                <br>Task done ? 
+                <select name="done">
+                    <option value="0" selected> No</option>
+                    <option value="1"> Yes</option>
+                </select>
+            </div>
+            <br>
+            <input type="submit" value="Create Task!">
+        </form>
     </body>
 </html>
