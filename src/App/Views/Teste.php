@@ -1,7 +1,15 @@
 <?php
+use App\Controllers\Controller;
 
+require 'vendor/autoload.php';
+
+$controller = new Controller();
+if (!empty($_POST)) {
+    var_dump($_POST);
+} else {
+    var_dump($_POST);
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,34 +23,40 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <form action="" method="POST">
-            <div>
-                <br>Task title: <input type="text" name="name" value="Enter the task name">
-            </div>
-            <div>
-                <br>Description: <input type="text" name="description" value="Describe what to do">
-            </div>
-            <div>
-                <br>Deadline: <input type="datetime-local" name="deadline" value="<? echo date('Y-m-d'); ?>T09:00">
-            </div>
-            <div>
-                <br>Priority: 
-                <select name="priority">
-                    <option value="4">Very high</option>
-                    <option value="3">High</option>
-                    <option value="2">Medium</option>
-                    <option value="1">Low</option>
-                </select>
-            </div>
-            <div>
-                <br>Task done ? 
-                <select name="done">
-                    <option value="0" selected> No</option>
-                    <option value="1"> Yes</option>
-                </select>
-            </div>
-            <br>
-            <input type="submit" value="Create Task!">
-        </form>
+        <div class="row justify-content-center">
+            <form action="./Teste.php" method="POST">
+                <div class="form-group">
+                    <label>Task title:</label>
+                    <input type="text" class="form-control" name="name" value="" placeholder="Enter the task name">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea name="description" class="form-control" cols="40" rows="5" maxlength="140" placeholder="Describe what to do..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Deadline:</label>
+                    <input type="datetime-local" class="form-control" name="deadline" value="<? echo date('Y-m-d'); ?>T09:00">
+                </div>
+                <div class="form-group">
+                    <label>Priority:</label>
+                    <select name="priority" class="form-control">
+                        <option value="4">Very high</option>
+                        <option value="3">High</option>
+                        <option value="2">Medium</option>
+                        <option value="1">Low</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <select name="done" class="form-control">
+                        <option value="0" selected>Ongoing</option>
+                        <option value="1">Done</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" name="save">Create task!</button>
+                </div>
+            </form>
+        </div>
     </body>
 </html>

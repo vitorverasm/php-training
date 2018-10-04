@@ -31,4 +31,8 @@ class Controller
             return "Nenhuma tarefa criada";
         }
     }
+    public function teste()
+    {
+        echo "Teste";
+    }
 }
