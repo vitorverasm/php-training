@@ -5,9 +5,7 @@ require 'vendor/autoload.php';
 
 $controller = new Controller();
 if (!empty($_POST)) {
-    var_dump($_POST);
-} else {
-    var_dump($_POST);
+    echo $controller->createTask($_POST);
 }
 ?>
 
@@ -40,17 +38,17 @@ if (!empty($_POST)) {
                 <div class="form-group">
                     <label>Priority:</label>
                     <select name="priority" class="form-control">
-                        <option value="4">Very high</option>
-                        <option value="3">High</option>
-                        <option value="2">Medium</option>
-                        <option value="1">Low</option>
+                        <option value=4>Very high</option>
+                        <option value=3>High</option>
+                        <option value=2>Medium</option>
+                        <option value=1>Low</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Status:</label>
-                    <select name="done" class="form-control">
-                        <option value="0" selected>Ongoing</option>
-                        <option value="1">Done</option>
+                    <select name="status" class="form-control">
+                        <option value=0 selected>Ongoing</option>
+                        <option value=1>Done</option>
                     </select>
                 </div>
                 <div class="form-group">

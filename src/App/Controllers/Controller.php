@@ -12,14 +12,29 @@ class Controller
         $this->model = new Model();
     }
 
-    public function createTask($json)
+    public function createTask($data)
     {
-        $data = json_decode($json, true);
+        if (empty($data['name'])){
+            return "Task title empty! ";
+        }
+        if (empty($data['description'])){
+            return "Task description empty! ";
+        }
+        if ($data['deadline'] == '0000-00-00T00:00:00' || empty($data['deadline'])){
+            return "Invalid deadline! ";
+        }
+        $deadline = explode("T", $data['deadline']);
+        $deadline = $deadline[0] . " " . $deadline[1];
+        $data['deadline'] = $deadline;
+
+        $data['priority'] = (int)$data['priority'];
+        $data['status'] = (int)$data['status'];
+
         $result = $this->model->insert($data);
         if ($result) {
-            return "Tarefa criada com sucesso";
+            return "Task successfully created";
         } else {
-            return "Falha na criação da tarefa";
+            return "Creation of task failed";
         }
     }
     public function showAllTasks()
@@ -28,11 +43,7 @@ class Controller
         if (!empty($result)) {
             return $result;
         } else {
-            return "Nenhuma tarefa criada";
+            return "No tasks created";
         }
-    }
-    public function teste()
-    {
-        echo "Teste";
     }
 }
