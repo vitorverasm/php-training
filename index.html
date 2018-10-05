@@ -10,8 +10,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <style>
-        a.error {
-            color: red;
+        .nav-links {
+            color: white;
+            margin-right: 20px;
         }
     </style>
 </head>
@@ -23,10 +24,9 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a class="error" href="#">
-                        <?php echo $str?></a></li>
-                <li><a href="#">Done</a></li>
-                <li><a href="#">All</a></li>
+                <li><a class="nav-links" href="http://localhost:8000/src/App/Views/CreateTaskView.php">Ongoing</a></li>
+                <li><a class="nav-links" href="#">Done</a></li>
+                <li><a class="nav-links" href="#">All</a></li>
             </ul>
         </div>
     </nav>
