@@ -5,4 +5,4 @@ error_reporting(E_ALL);
 require 'vendor/autoload.php';
 $str = "ola asdsa";
 
-require_once './index.html';
+require_once './index.htm';
