@@ -47,7 +47,7 @@ class Model
     {
         $sql = "SELECT * FROM {$this->config['tablename']};";
         try {
-            $result = $this->conn->query($sql)->fetch();
+            $result = $this->conn->query($sql)->fetchAll();
             return $result;
         } catch (PDOException $e) {
             echo $exc->getMessage();
