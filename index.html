@@ -30,6 +30,50 @@
             </ul>
         </div>
     </nav>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Task Manager</h1>
+            <p class="lead">This simple application can help you track your daily tasks and organize your schedule.</p>
+            <hr class="my-4">
+            <p class="lead">
+                <button type="button" class="btn btn-success">Create Task!</button>
+            </p>
+        </div>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>task 1</td>
+                    <td>desc 1</td>
+                    <td>dead 1</td>
+                    <td>prior 1</td>
+                    <td>status 1</td>
+                    <td>
+                        <button type="button" class="btn btn-info">Info</button>
+                        <button type="button" class="btn btn-warning">Edit</button>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <?php var_dump($result);
+                        ?>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
