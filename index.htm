@@ -30,14 +30,18 @@
             </ul>
         </div>
     </nav>
-    <div class="jumbotron">
-        <h1 class="display-4">Task Manager</h1>
-        <p class="lead">With this simple application you can manage your daily tasks and organize your schedule.</p>
-        <hr class="my-4">
-        <button type="button" class="btn btn-success">Create new Task!</button>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Task Manager</h1>
+            <p class="lead">This simple application can help you track your daily tasks and organize your schedule.</p>
+            <hr class="my-4">
+            <p class="lead">
+                <button type="button" class="btn btn-success">Create Task!</button>
+            </p>
+        </div>
     </div>
-    <div class="container">
-        <table class="table table table-hover">
+    <div>
+        <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">id</th>
@@ -52,11 +56,11 @@
             <tbody>
                 <tr>
                     <th scope="row">1</th>
-                    <td>Title1</td>
-                    <td>Description1</td>
-                    <td>Deadline1</td>
-                    <td>Priority1</td>
-                    <td>status1</td>
+                    <td>task 1</td>
+                    <td>desc 1</td>
+                    <td>dead 1</td>
+                    <td>prior 1</td>
+                    <td>status 1</td>
                     <td>
                         <button type="button" class="btn btn-info">Info</button>
                         <button type="button" class="btn btn-warning">Edit</button>
@@ -64,30 +68,12 @@
                     </td>
                 </tr>
                 <tr>
-                        <th scope="row">1</th>
-                        <td>Title1</td>
-                        <td>Description1</td>
-                        <td>Deadline1</td>
-                        <td>Priority1</td>
-                        <td>status1</td>
-                        <td>
-                            <button type="button" class="btn btn-info">Info</button>
-                            <button type="button" class="btn btn-warning">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        </td>
-                    </tr>
+                    <?php var_dump($result);
+                        ?>
+                </tr>
             </tbody>
         </table>
     </div>
-    <footer class="page-footer font-small blue bg-dark">
-
-        <!-- Copyright -->
-        <div class="footer-copyright text-center py-3">© 2018 Copyright:
-            <a href="https://mdbootstrap.com/bootstrap-tutorial/"> MDBootstrap.com</a>
-        </div>
-        <!-- Copyright -->
-
-    </footer>
 </body>
 
 </html>
