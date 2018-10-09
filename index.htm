@@ -24,7 +24,7 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a class="nav-links" href="http://localhost:8000/src/App/Views/CreateTaskView.php">Ongoing</a></li>
+                <li><a class="nav-links" href="#">Ongoing</a></li>
                 <li><a class="nav-links" href="#">Done</a></li>
                 <li><a class="nav-links" href="#">All</a></li>
             </ul>
@@ -35,12 +35,13 @@
             <h1 class="display-4">Task Manager</h1>
             <p class="lead">This simple application can help you track your daily tasks and organize your schedule.</p>
             <hr class="my-4">
+
             <p class="lead">
-                <button type="button" class="btn btn-success">Create Task!</button>
+                <a href="/src/App/Views/CreateTaskView.php" class="btn btn-success">Create Task!</a>
             </p>
         </div>
     </div>
-    <div>
+    <div class="container">
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -54,23 +55,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>task 1</td>
-                    <td>desc 1</td>
-                    <td>dead 1</td>
-                    <td>prior 1</td>
-                    <td>status 1</td>
+                <?php
+                foreach ($result as $value) {
+                    echo (
+                    "<tr>".
+                        "<th scope='row'>".$value['id']."</th>".
+                        "<td>".$value['name']."</td>".
+                        "<td>".$value['description']."</td>".
+                        "<td>".$value['deadline']."</td>".
+                        "<td>".$value['priority']."</td>".
+                        "<td>".$value['status']."</td>".
+                    "
                     <td>
-                        <button type="button" class="btn btn-info">Info</button>
-                        <button type="button" class="btn btn-warning">Edit</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <button type='button' class='btn btn-info'>Info</button>
+                        <button type='button' class='btn btn-warning'>Edit</button>
+                        <button type='button' class='btn btn-danger' onclick="$controller->deleteTask($value['id']);">Delete</button>
                     </td>
-                </tr>
-                <tr>
-                    <?php var_dump($result);
-                        ?>
-                </tr>
+                    ".
+                    "</tr>"
+                    );
+                }
+                ?>
             </tbody>
         </table>
     </div>

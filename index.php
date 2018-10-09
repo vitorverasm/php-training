@@ -5,6 +5,8 @@ use App\Controllers\Controller;
 
 require 'vendor/autoload.php';
 
+header('Google: https://www.google.com/');
+
 $controller = new Controller();
 $result = $controller->showAllTasks();
 

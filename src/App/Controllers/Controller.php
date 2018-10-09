@@ -46,4 +46,14 @@ class Controller
             return "No tasks created";
         }
     }
+
+    public function deleteTask($id)
+    {
+        $result = $this->model->delete($id);
+        if ($result) {
+            return "Task deleted";
+        } else {
+            return "Task deletion error";
+        }
+    }
 }
