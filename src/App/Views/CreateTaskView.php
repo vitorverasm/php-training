@@ -1,11 +1,11 @@
 <?php
 use App\Controllers\Controller;
 
-require 'vendor/autoload.php';
+require '../../../vendor/autoload.php';
 
 $controller = new Controller();
 if (!empty($_POST)) {
-    echo $controller->createTask($_POST);
+    $controller->createTask($_POST);
 }
 ?>
 
@@ -22,7 +22,7 @@ if (!empty($_POST)) {
     </head>
     <body>
         <div class="row justify-content-center">
-            <form action="./Teste.php" method="POST">
+            <form action="../../../index.php" method="POST">
                 <div class="form-group">
                     <label>Task title:</label>
                     <input type="text" class="form-control" name="name" value="" placeholder="Enter the task name">
