@@ -1,7 +1,9 @@
 <?php
 use App\Controllers\Controller;
 
-if (!empty($_POST) && isset($_POST['action']) && $_POST['action'] == 'create') {
+require '../../../vendor/autoload.php';
+
+if (!empty($_POST)) {
     $controller = new Controller();
-    $controller->createTask($_POST['data']);
+    echo $controller->createTask($_POST);
 }

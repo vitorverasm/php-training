@@ -5,7 +5,6 @@ use App\Controllers\Controller;
 
 require 'vendor/autoload.php';
 
-
 $controller = new Controller();
 $result = $controller->showAllTasks();
 require_once './index.htm';
