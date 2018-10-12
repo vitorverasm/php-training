@@ -14,13 +14,14 @@ class Controller
 
     public function createTask($data)
     {
-        if (empty($data['name'])){
+        $data = json_decode($data, true);
+        if (empty($data['name'])) {
             return "Task title empty! ";
         }
-        if (empty($data['description'])){
+        if (empty($data['description'])) {
             return "Task description empty! ";
         }
-        if ($data['deadline'] == '0000-00-00T00:00:00' || empty($data['deadline'])){
+        if ($data['deadline'] == '0000-00-00T00:00:00' || empty($data['deadline'])) {
             return "Invalid deadline! ";
         }
         $deadline = explode("T", $data['deadline']);

@@ -14,13 +14,23 @@
 
             $('form').on('submit', function (e) {
                 e.preventDefault();
-                let formData = $('form').serialize()
+                var data = {
+                    name: $('#name').val(),
+                    description: $('#description').val(),
+                    deadline: $('#deadline').val(),
+                    priority: $('#priority').val(),
+                    status: $('#status').val()
+                }
                 $.ajax({
                     type: 'POST',
                     url: '../Controllers/TaskController.php',
-                    data: formData,
-                    success: function () {
-                        alert('form was submitted');
+                    data: {
+                        action: 'create',
+                        body: JSON.stringify(data)
+                    },
+                    success: function (result) {
+                        alert(result);
+                        window.location.href = "../../../index.php";
                     }
                 });
 
@@ -35,19 +45,20 @@
         <form>
             <div class="form-group">
                 <label>Task title:</label>
-                <input type="text" class="form-control" name="name" value="" placeholder="Enter the task name">
+                <input id="name" type="text" class="form-control" name="name" value="" placeholder="Enter the task name">
             </div>
             <div class="form-group">
                 <label>Description:</label>
-                <textarea name="description" class="form-control" cols="40" rows="5" maxlength="140" placeholder="Describe what to do..."></textarea>
+                <textarea id="description" name="description" class="form-control" cols="40" rows="5" maxlength="140"
+                    placeholder="Describe what to do..."></textarea>
             </div>
             <div class="form-group">
                 <label>Deadline:</label>
-                <input type="datetime-local" class="form-control" name="deadline" value="<? echo date('Y-m-d'); ?>T09:00">
+                <input id="deadline" type="datetime-local" class="form-control" name="deadline" value="">
             </div>
             <div class="form-group">
                 <label>Priority:</label>
-                <select name="priority" class="form-control">
+                <select id="priority" name="priority" class="form-control">
                     <option value=4>Very high</option>
                     <option value=3>High</option>
                     <option value=2>Medium</option>
@@ -56,7 +67,7 @@
             </div>
             <div class="form-group">
                 <label>Status:</label>
-                <select name="status" class="form-control">
+                <select id="status" name="status" class="form-control">
                     <option value=0 selected>Ongoing</option>
                     <option value=1>Done</option>
                 </select>
