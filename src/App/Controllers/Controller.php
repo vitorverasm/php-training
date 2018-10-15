@@ -37,10 +37,14 @@ class Controller
             return "Creation of task failed";
         }
     }
+
     public function showAllTasks()
     {
         $result = $this->model->showAll();
         if (!empty($result)) {
+            foreach ($result as $key => $val) {
+                $result[$key] = $this->filter($val);
+            }
             return $result;
         } else {
             return "No tasks created";
