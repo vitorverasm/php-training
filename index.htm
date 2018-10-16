@@ -23,11 +23,11 @@
                 type: 'POST',
                 url: './src/App/Controllers/TaskController.php',
                 data: {
-                    action: 'get',
-                    body: {}
+                    action: 'getById',
+                    id: '9'
                 },
                 success: function (result) {
-                    alert(JSON.stringify(result));
+                    alert(result);
                 }
             });
         });

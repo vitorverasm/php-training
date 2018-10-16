@@ -15,15 +15,18 @@ class Controller
     public function createTask($data)
     {
         $data = json_decode($data, true);
-        
+
         if (empty($data['name'])) {
-            return "Task title empty! ";
+            echo "Task title empty! ";
+            return;
         }
         if (empty($data['description'])) {
-            return "Task description empty! ";
+            echo "Task description empty! ";
+            return;
         }
         if ($data['deadline'] == '0000-00-00T00:00:00' || empty($data['deadline'])) {
-            return "Invalid deadline! ";
+            echo "Invalid deadline! ";
+            return;
         }
         $deadline = explode("T", $data['deadline']);
         $deadline = $deadline[0] . " " . $deadline[1];
@@ -34,9 +37,14 @@ class Controller
 
         $result = $this->model->insert($data);
         if ($result) {
-            return "Task successfully created";
+            //TODO: mandar todas as respostas no formato abaixo.
+            $response = array(
+                'status'=>'200',
+                'message'=>'Task successfully created'
+            );
+            echo "Task successfully created";
         } else {
-            return "Creation of task failed";
+            echo "Creation of task failed";
         }
     }
 
@@ -47,9 +55,11 @@ class Controller
             foreach ($result as $key => $val) {
                 $result[$key] = $this->filter($val);
             }
+            $response = json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            // echo $response;
             return $result;
         } else {
-            return "No tasks created";
+            echo "No tasks created";
         }
     }
 
@@ -57,9 +67,11 @@ class Controller
     {
         $result = $this->model->show($id);
         if (!empty($result)) {
-            return $this->filter($result);
+            $result = $this->filter($result);
+            $response = json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo($response);
         } else {
-            return "Can't get information about this task";
+            echo "Can't get information about this task";
         }
     }
 
@@ -67,22 +79,25 @@ class Controller
     {
         $result = $this->model->delete($id);
         if ($result) {
-            return "Task deleted";
+            echo "Task deleted";
         } else {
-            return "Task deletion error";
+            echo "Task deletion error";
         }
     }
 
     public function editTask($id, $task)
     {
         if (empty($task['name'])) {
-            return "Task title empty! ";
+            echo "Task title empty! ";
+            return;
         }
         if (empty($task['description'])) {
-            return "Task description empty! ";
+            echo "Task description empty! ";
+            return;
         }
         if ($task['deadline'] == '0000-00-00T00:00:00' || empty($task['deadline'])) {
-            return "Invalid deadline! ";
+            echo "Invalid deadline! ";
+            return;
         }
         $deadline = explode("T", $task['deadline']);
         $deadline = $deadline[0] . " " . $deadline[1];
@@ -95,7 +110,7 @@ class Controller
         if (!empty($result)) {
             return $result;
         } else {
-            return "Can't update task information";
+            echo "Can't update task information";
         }
     }
 
