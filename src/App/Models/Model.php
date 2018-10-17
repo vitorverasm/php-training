@@ -47,7 +47,7 @@ class Model
     {
         $sql = "SELECT * FROM {$this->config['tablename']};";
         try {
-            $result = $this->conn->query($sql)->fetchAll();
+            $result = $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {
             echo $exc->getMessage();
@@ -63,7 +63,7 @@ class Model
                 ':id' => $id
             ];
             $stmt->execute($values);
-            $result = $stmt->fetch();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {
             echo $exc->getMessage();
