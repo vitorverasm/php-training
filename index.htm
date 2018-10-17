@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <style>
         .nav-links {
             color: white;
@@ -18,7 +18,29 @@
         }
     </style>
     <script>
-        function handleBtn(btn){
+        function handleBtnInfo(btn) {
+            var row = $(btn).closest('tr');
+            var cols = $(row).find('td');
+            var taskId = cols[0].innerHTML;
+            $.ajax({
+                type: 'POST',
+                url: './src/App/Controllers/TaskController.php',
+                data: {
+                    action: 'getById',
+                    id: taskId
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    //TODO: mudar o estilo do content
+                    $('#infoModal').find('#info-content').html("<p>"+JSON.stringify(result)+"</p>");
+                    $('#infoModal').modal('show');
+                }
+            });
+        }
+        function handleBtnEdit(btn) {
+            console.log(btn);
+        }
+        function handleBtnDelete(btn) {
             console.log(btn);
         }
         function insertRow(object) {
@@ -32,9 +54,9 @@
                 index++;
             }
             var options = newRow.insertCell(-1);
-            options.innerHTML = '<button onclick="handleBtn(this)" type="button" class="btn btn-info">Info</button>';
-            options.innerHTML += '<button onclick="handleBtn(this)" type="button" class="btn btn-warning">Edit</button>';
-            options.innerHTML += '<button onclick="handleBtn(this)" type="button" class="btn btn-danger">Delete</button>';
+            options.innerHTML = '<button onclick="handleBtnInfo(this)" type="button" class="btn btn-info">Info</button>';
+            options.innerHTML += '<button onclick="handleBtnEdit(this)" type="button" class="btn btn-warning">Edit</button>';
+            options.innerHTML += '<button onclick="handleBtnDelete(this)" type="button" class="btn btn-danger">Delete</button>';
         }
         function loadTasks() {
             $.ajax({
@@ -95,6 +117,27 @@
             </tbody>
         </table>
     </div>
+
+    <div id="infoModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="info-content" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
+
 
 </html>
