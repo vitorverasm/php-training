@@ -37,14 +37,19 @@ class Controller
 
         $result = $this->model->insert($data);
         if ($result) {
-            //TODO: mandar todas as respostas no formato abaixo.
             $response = array(
-                'status'=>'200',
-                'message'=>'Task successfully created'
+                'status' => '200',
+                'message' => 'Task successfully created'
             );
-            echo "Task successfully created";
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         } else {
-            echo "Creation of task failed";
+            $response = array(
+                'status' => '400',
+                'message' => 'Creation of task failed'
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         }
     }
 
@@ -55,11 +60,21 @@ class Controller
             foreach ($result as $key => $val) {
                 $result[$key] = $this->filter($val);
             }
-            $response = json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            // echo $response;
-            return $result;
+            $response = array(
+                'status' => '200',
+                'message' => 'OK',
+                'data' => $result
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
+            // return $result;
         } else {
-            echo "No tasks created";
+            $response = array(
+                'status' => '400',
+                'message' => 'No tasks created'
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         }
     }
 
@@ -68,10 +83,21 @@ class Controller
         $result = $this->model->show($id);
         if (!empty($result)) {
             $result = $this->filter($result);
-            $response = json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo($response);
+            $response = array(
+                'status' => '200',
+                'message' => 'OK',
+                'data' => $result
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo ($response);
         } else {
-            echo "Can't get information about this task";
+            $response = array(
+                'status' => '400',
+                'message' => 'Cant get information about this task',
+                'data' => $result
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         }
     }
 
@@ -79,9 +105,19 @@ class Controller
     {
         $result = $this->model->delete($id);
         if ($result) {
-            echo "Task deleted";
+            $response = array(
+                'status' => '200',
+                'message' => 'Task deleted'
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         } else {
-            echo "Task deletion error";
+            $response = array(
+                'status' => '400',
+                'message' => 'Task deletion error'
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         }
     }
 
@@ -108,9 +144,20 @@ class Controller
 
         $result = $this->model->update($id, $task);
         if (!empty($result)) {
-            return $result;
+            $response = array(
+                'status' => '200',
+                'message' => 'Update successful',
+                'data' => $result
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         } else {
-            echo "Can't update task information";
+            $response = array(
+                'status' => '400',
+                'message' => 'Cant update task information'
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
         }
     }
 
