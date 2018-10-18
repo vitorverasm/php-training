@@ -31,8 +31,19 @@
                 },
                 success: function (result) {
                     result = JSON.parse(result);
+                    console.log(result);
                     //TODO: mudar o estilo do content
-                    $('#infoModal').find('#info-content').html("<p>"+JSON.stringify(result)+"</p>");
+                    var taskList = `
+                    <ul class="list-group">
+                        <li class="list-group-item">${result.data.id}</li>
+                        <li class="list-group-item">${result.data.name}</li>
+                        <li class="list-group-item">${result.data.description}</li>
+                        <li class="list-group-item">${result.data.deadline}</li>
+                        <li class="list-group-item">${result.data.priority}</li>
+                        <li class="list-group-item">${result.data.status}</li>
+                    </ul>
+                    `;
+                    $('#infoModal').find('#info-content').html(taskList);
                     $('#infoModal').modal('show');
                 }
             });
@@ -55,8 +66,6 @@
             }
             var options = newRow.insertCell(-1);
             options.innerHTML = '<button onclick="handleBtnInfo(this)" type="button" class="btn btn-info">Info</button>';
-            options.innerHTML += '<button onclick="handleBtnEdit(this)" type="button" class="btn btn-warning">Edit</button>';
-            options.innerHTML += '<button onclick="handleBtnDelete(this)" type="button" class="btn btn-danger">Delete</button>';
         }
         function loadTasks() {
             $.ajax({
@@ -122,7 +131,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title">Task information</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -130,7 +139,8 @@
                 <div id="info-content" class="modal-body">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button id="deleteTask" type="button" class="btn btn-danger">Delete</button>
+                    <button id="editTask" type="button" class="btn btn-warning">Edit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
