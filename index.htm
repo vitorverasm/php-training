@@ -34,7 +34,7 @@
                     console.log(result);
                     //TODO: mudar o estilo do content
                     var taskList = `
-                    <ul class="list-group">
+                    <ul id="taskList" class="list-group">
                         <li class="list-group-item">${result.data.id}</li>
                         <li class="list-group-item">${result.data.name}</li>
                         <li class="list-group-item">${result.data.description}</li>
@@ -51,9 +51,23 @@
         function handleBtnEdit(btn) {
             console.log(btn);
         }
-        function handleBtnDelete(btn) {
-            console.log(btn);
-        }
+        $(document).on('click', '#btnDeleteTask', function () {
+            var divContent = $(document).find('#taskList');
+            var list = $(divContent).find('li');
+            var taskId = list[0].innerHTML;
+            $.ajax({
+                type: 'POST',
+                url: './src/App/Controllers/TaskController.php',
+                data: {
+                    action: 'deleteById',
+                    id: taskId
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    console.log(result);
+                }
+            });
+        });
         function insertRow(object) {
             var tableRef = document.getElementById('tasks');
             var newRow = tableRef.insertRow(1);
@@ -138,9 +152,9 @@
                 </div>
                 <div id="info-content" class="modal-body">
                 </div>
-                <div class="modal-footer">
-                    <button id="deleteTask" type="button" class="btn btn-danger">Delete</button>
-                    <button id="editTask" type="button" class="btn btn-warning">Edit</button>
+                <div id="mod-footer" class="modal-footer">
+                    <button id="btnDeleteTask" type="button" class="btn btn-danger">Delete</button>
+                    <button id="btnEditTask" type="button" class="btn btn-warning">Edit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
