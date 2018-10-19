@@ -18,6 +18,10 @@
         }
     </style>
     <script>
+        $(document).on('click', '#showCreateModal', function () {
+            console.log('create')
+            $('#createModal').modal('show');
+        });
         function handleBtnInfo(btn) {
             var row = $(btn).closest('tr');
             var cols = $(row).find('td');
@@ -46,9 +50,6 @@
                 }
             });
         }
-        function handleBtnEdit(btn) {
-            console.log(btn);
-        }
         $(document).on('click', '#btnDeleteTask', function () {
             var divContent = $(document).find('#taskList');
             var list = $(divContent).find('li');
@@ -64,7 +65,7 @@
                     result = JSON.parse(result);
                     alert(result.message);
                     $('#infoModal').modal('hide');
-                    loadTasks();
+                    window.location.href = "../../../index.php";
                 }
             });
         });
@@ -119,7 +120,7 @@
             <hr class="my-4">
 
             <p class="lead">
-                <a href="/src/App/Views/CreateTaskView.htm" class="btn btn-success">Create Task!</a>
+                <button id="showCreateModal" class="btn btn-success">New Task</button>
             </p>
         </div>
     </div>
@@ -155,6 +156,25 @@
                     <button id="btnDeleteTask" type="button" class="btn btn-danger">Delete</button>
                     <button id="btnEditTask" type="button" class="btn btn-warning">Edit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="createModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="create-content" class="modal-body">
+                </div>
+                <div id="mod-footer" class="modal-footer">
+                    <button id="btnCreateTask" type="button" class="btn btn-success">Create</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
