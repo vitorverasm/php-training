@@ -31,8 +31,6 @@
                 },
                 success: function (result) {
                     result = JSON.parse(result);
-                    console.log(result);
-                    //TODO: mudar o estilo do content
                     var taskList = `
                     <ul id="taskList" class="list-group">
                         <li class="list-group-item">${result.data.id}</li>
@@ -64,7 +62,9 @@
                 },
                 success: function (result) {
                     result = JSON.parse(result);
-                    console.log(result);
+                    alert(result.message);
+                    $('#infoModal').modal('hide');
+                    loadTasks();
                 }
             });
         });
@@ -133,7 +133,6 @@
                     <th scope="col">Deadline</th>
                     <th scope="col">Priority</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -141,7 +140,7 @@
         </table>
     </div>
 
-    <div id="infoModal" class="modal" tabindex="-1" role="dialog">
+    <div id="infoModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
