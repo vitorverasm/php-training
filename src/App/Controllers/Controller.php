@@ -12,20 +12,30 @@ class Controller
         $this->model = new Model();
     }
 
+    public function getErrors($data)
+    {
+        if (empty($data['name'])) {
+            return "Task title empty! ";
+        }
+        if (empty($data['description'])) {
+            return "Task description empty! ";
+        }
+        if ($data['deadline'] == '0000-00-00T00:00:00' || empty($data['deadline'])) {
+            return "Invalid deadline! ";
+        }
+        return false;
+    }
     public function createTask($data)
     {
         $data = json_decode($data, true);
-
-        if (empty($data['name'])) {
-            echo "Task title empty! ";
-            return;
-        }
-        if (empty($data['description'])) {
-            echo "Task description empty! ";
-            return;
-        }
-        if ($data['deadline'] == '0000-00-00T00:00:00' || empty($data['deadline'])) {
-            echo "Invalid deadline! ";
+        $error = $this->getErrors($data);
+        if ($error) {
+            $response = array(
+                'status' => '400',
+                'message' => $error
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
             return;
         }
         $deadline = explode("T", $data['deadline']);
@@ -123,16 +133,15 @@ class Controller
 
     public function editTask($id, $task)
     {
-        if (empty($task['name'])) {
-            echo "Task title empty! ";
-            return;
-        }
-        if (empty($task['description'])) {
-            echo "Task description empty! ";
-            return;
-        }
-        if ($task['deadline'] == '0000-00-00T00:00:00' || empty($task['deadline'])) {
-            echo "Invalid deadline! ";
+        $task = json_decode($task, true);
+        $error = $this->getErrors($task);
+        if ($error) {
+            $response = array(
+                'status' => '400',
+                'message' => $error
+            );
+            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            echo $response;
             return;
         }
         $deadline = explode("T", $task['deadline']);
