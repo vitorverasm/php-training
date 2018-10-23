@@ -1,8 +1,21 @@
 # PHP - Training(Crud)
 
-## Problem description
+### Table of Contents
+ 1. [Description](#description)
+ 2. [Project Conditions](#project-conditions)
+ 3. [Project Requirements](#project-requirements)
+ 4. [Installation](#installation)
+ 5. [Running](#running)
+ 6. [Project Structure](#project-structure)
+	 6.1. [Model](#model)
+	 6.2. [Controllers](#controllers)
+	 6.3. [View](#view)
+ 7. [Comments](#comments)
+ 8. [Author](#author)
 
-## Project conditions
+## Description
+
+## Project Conditions
 
 ## Project Requirements
 
@@ -26,9 +39,11 @@
 
 ### View
 
-## Observations
+## Comments
 
 
 ## Author
 
 * **Vitor Veras de Moura** - [GitHub](https://github.com/vitor-veras) - [LinkedIn](linkedinaqui) - Email: vitorverasm@gmail.com
+
+
