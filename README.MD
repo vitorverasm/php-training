@@ -7,9 +7,9 @@
  4. [Installation](#installation)
  5. [Running](#running)
  6. [Project Structure](#project-structure)
-	 6.1. [Model](#model)
-	 6.2. [Controllers](#controllers)
-	 6.3. [View](#view)
+	 - [Model](#model)
+	 - [Controllers](#controllers)
+	 - [View](#view)
  7. [Comments](#comments)
  8. [Author](#author)
 
