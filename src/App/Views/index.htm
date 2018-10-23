@@ -18,6 +18,7 @@
         }
     </style>
     <script>
+        var baseUrl = "<?php echo $baseUrl?>"
         $(function () {
             $('form').on('submit', function (e) {
                 e.preventDefault();
@@ -30,7 +31,7 @@
                 }
                 $.ajax({
                     type: 'POST',
-                    url: './src/App/Controllers/TaskController.php',
+                    url: baseUrl + '/src/App/Controllers/TaskController.php',
                     data: {
                         action: 'create',
                         body: JSON.stringify(data)
@@ -39,7 +40,7 @@
                         result = JSON.parse(result);
                         alert(result.message);
                         if (result.status === '200') {
-                            window.location.href = "../../../index.php";
+                            window.location.href = baseUrl + "/index.php";
                         }
                     }
                 });
@@ -55,7 +56,7 @@
             var taskId = cols[0].innerHTML;
             $.ajax({
                 type: 'POST',
-                url: './src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
                 data: {
                     action: 'getById',
                     id: taskId
@@ -129,7 +130,7 @@
             var taskId = form.data("id");
             $.ajax({
                 type: 'POST',
-                url: './src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
                 data: {
                     action: 'deleteById',
                     id: taskId
@@ -138,7 +139,7 @@
                     result = JSON.parse(result);
                     alert(result.message);
                     if (result.status === '200') {
-                        window.location.href = "../../../index.php";
+                        window.location.href = baseUrl + "/index.php";
                     }
                 }
             });
@@ -178,7 +179,7 @@
         function loadTasks() {
             $.ajax({
                 type: 'POST',
-                url: './src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
                 data: {
                     action: 'get'
                 },
@@ -202,7 +203,7 @@
             var taskId = form.data("id");
             $.ajax({
                 type: 'POST',
-                url: './src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
                 data: {
                     action: 'updateById',
                     id: taskId,
@@ -212,7 +213,7 @@
                     result = JSON.parse(result);
                     alert(result.message);
                     if (result.status === '200') {
-                        window.location.href = "../../../index.php";
+                        window.location.href = baseUrl + "/index.php";
                     }
                 }
             });
