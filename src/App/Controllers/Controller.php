@@ -77,7 +77,6 @@ class Controller
             );
             $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             echo $response;
-            // return $result;
         } else {
             $response = array(
                 'status' => '400',

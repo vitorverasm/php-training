@@ -31,7 +31,7 @@
                 }
                 $.ajax({
                     type: 'POST',
-                    url: baseUrl + '/src/App/Controllers/TaskController.php',
+                    url: baseUrl + '/src/App/Controllers/RouterController.php',
                     data: {
                         action: 'create',
                         body: JSON.stringify(data)
@@ -56,7 +56,7 @@
             var taskId = cols[0].innerHTML;
             $.ajax({
                 type: 'POST',
-                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/RouterController.php',
                 data: {
                     action: 'getById',
                     id: taskId
@@ -130,7 +130,7 @@
             var taskId = form.data("id");
             $.ajax({
                 type: 'POST',
-                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/RouterController.php',
                 data: {
                     action: 'deleteById',
                     id: taskId
@@ -179,7 +179,7 @@
         function loadTasks() {
             $.ajax({
                 type: 'POST',
-                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/RouterController.php',
                 data: {
                     action: 'get'
                 },
@@ -203,7 +203,7 @@
             var taskId = form.data("id");
             $.ajax({
                 type: 'POST',
-                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                url: baseUrl + '/src/App/Controllers/RouterController.php',
                 data: {
                     action: 'updateById',
                     id: taskId,
