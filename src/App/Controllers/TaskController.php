@@ -16,7 +16,7 @@ if (!empty($_POST) && !empty($_POST['action'])) {
             return $controller->showTask($_POST['id']);
             break;
         case 'updateById':
-            return $controller->editTask($_POST['id']);
+            return $controller->editTask($_POST['id'], $_POST['body']);
             break;
         case 'deleteById':
             return $controller->deleteTask($_POST['id']);

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Task Manager</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        .nav-links {
+            color: white;
+            margin-right: 20px;
+        }
+    </style>
+    <script>
+        var baseUrl = "<?php echo $baseUrl?>"
+        $(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                var data = {
+                    name: $('#name').val(),
+                    description: $('#description').val(),
+                    deadline: $('#deadline').val(),
+                    priority: $('#priority').val(),
+                    status: $('#status').val()
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: baseUrl + '/src/App/Controllers/TaskController.php',
+                    data: {
+                        action: 'create',
+                        body: JSON.stringify(data)
+                    },
+                    success: function (result) {
+                        result = JSON.parse(result);
+                        alert(result.message);
+                        if (result.status === '200') {
+                            window.location.href = baseUrl + "/index.php";
+                        }
+                    }
+                });
+
+            });
+        });
+        $(document).on('click', '#showCreateModal', function () {
+            $('#createModal').modal('show');
+        });
+        function handleBtnEdit(btn) {
+            var row = $(btn).closest('tr');
+            var cols = $(row).find('td');
+            var taskId = cols[0].innerHTML;
+            $.ajax({
+                type: 'POST',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                data: {
+                    action: 'getById',
+                    id: taskId
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    var id = result.data.id;
+                    var name = result.data.name;
+                    var description = result.data.description;
+                    var priority = result.data.priority;
+                    var status = result.data.status;
+                    var datepicker = result.data.deadline.split(" ");
+                    datepicker = datepicker[0] + 'T' + datepicker[1];
+
+                    var editForm = `
+                    <form id="edit-form" data-id="${id}">
+                        <div class="form-group">
+                            <label>Task title:</label>
+                            <input id="name" type="text" class="form-control" name="name" value="${name}" placeholder="Enter the task name">
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea id="description" name="description" class="form-control" cols="40" rows="5"
+                                maxlength="140" placeholder="Describe what to do...">${description}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Deadline:</label>
+                            <input id="deadline" type="datetime-local" class="form-control" name="deadline" value="${datepicker}">
+                        </div>
+                        <div class="form-group">
+                            <label>Priority:</label>
+                            <select id="priority" name="priority" class="form-control">
+                                <option selected value=${mapPriority(priority)}>Selected: ${priority}</option>
+                                <option value=4>Very high</option>
+                                <option value=3>High</option>
+                                <option value=2>Medium</option>
+                                <option value=1>Low</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status:</label>
+                            <select id="status" name="status" class="form-control">
+                                <option selected value=${mapStatus(status)}>Selected: ${status}</option>
+                                <option value=0>Ongoing</option>
+                                <option value=1>Done</option>
+                            </select>
+                        </div>
+                    </form>
+                    `;
+                    $('#editModal').find('#edit-content').html(editForm);
+                    $('#editModal').modal('show');
+                }
+            });
+            function mapPriority(priorityLabel) {
+                var pr = 0;
+                priorityLabel == 'Very high' ? pr = 4 : pr;
+                priorityLabel == 'High' ? pr = 3 : pr;
+                priorityLabel == 'Medium' ? pr = 2 : pr;
+                priorityLabel == 'Low' ? pr = 1 : pr;
+                return pr;
+            }
+            function mapStatus(statusLabel) {
+                var sts = 0;
+                statusLabel == 'Ongoing' ? sts = 0 : sts;
+                statusLabel == 'Done' ? sts = 1 : sts;
+                return sts;
+            }
+        }
+        $(document).on('click', '#btnDeleteTask', function () {
+            var form = $('form#edit-form');
+            var taskId = form.data("id");
+            $.ajax({
+                type: 'POST',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                data: {
+                    action: 'deleteById',
+                    id: taskId
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    alert(result.message);
+                    if (result.status === '200') {
+                        window.location.href = baseUrl + "/index.php";
+                    }
+                }
+            });
+        });
+        function insertRow(object) {
+            var tableRef = document.getElementById('tasks');
+            var newRow = tableRef.insertRow(1);
+            var index = 0;
+
+            var newCell = newRow.insertCell(0);
+            var newText = document.createTextNode(object['id']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(1);
+            newText = document.createTextNode(object['name']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(2);
+            newText = document.createTextNode(object['deadline']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(3);
+            newText = document.createTextNode(object['priority']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(4);
+            newText = document.createTextNode(object['status']);
+            newCell.appendChild(newText);
+
+            var options = newRow.insertCell(-1);
+            options.innerHTML = `
+            <button onclick="handleBtnEdit(this)" type="button" class="btn btn-warning">
+                <i class="fa fa-pencil"></i> Edit
+            </button>
+            `;
+        }
+        function loadTasks() {
+            $.ajax({
+                type: 'POST',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                data: {
+                    action: 'get'
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    for (task in result.data) {
+                        insertRow(result.data[task]);
+                    }
+                }
+            });
+        }
+        $(document).on('click', '#btnEditSubmit', function () {
+            var form = $('form#edit-form');
+            var data = {
+                name: form.find('#name').val(),
+                description: form.find('#description').val(),
+                deadline: form.find('#deadline').val(),
+                priority: form.find('#priority').val(),
+                status: form.find('#status').val()
+            }
+            var taskId = form.data("id");
+            $.ajax({
+                type: 'POST',
+                url: baseUrl + '/src/App/Controllers/TaskController.php',
+                data: {
+                    action: 'updateById',
+                    id: taskId,
+                    body: JSON.stringify(data)
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    alert(result.message);
+                    if (result.status === '200') {
+                        window.location.href = baseUrl + "/index.php";
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<body onload="loadTasks();">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Task Manager</a>
+        </div>
+    </nav>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Task Manager</h1>
+            <p class="lead">This simple application can help you track your daily tasks and organize your schedule.</p>
+            <hr class="my-4">
+
+            <p class="lead">
+                <button id="showCreateModal" class="btn btn-success">New Task</button>
+            </p>
+        </div>
+    </div>
+    <div class="container">
+        <table id="tasks" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="createModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="create-content" class="modal-body">
+                    <div class="row justify-content-center">
+                        <form>
+                            <div class="form-group">
+                                <label>Task title:</label>
+                                <input id="name" type="text" class="form-control" name="name" value="" placeholder="Enter the task name">
+                            </div>
+                            <div class="form-group">
+                                <label>Description:</label>
+                                <textarea id="description" name="description" class="form-control" cols="40" rows="5"
+                                    maxlength="140" placeholder="Describe what to do..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Deadline:</label>
+                                <input id="deadline" type="datetime-local" class="form-control" name="deadline" value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Priority:</label>
+                                <select id="priority" name="priority" class="form-control">
+                                    <option value=4>Very high</option>
+                                    <option value=3>High</option>
+                                    <option value=2>Medium</option>
+                                    <option value=1>Low</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Status:</label>
+                                <select id="status" name="status" class="form-control">
+                                    <option value=0 selected>Ongoing</option>
+                                    <option value=1>Done</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" name="save">Create task!</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Task Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="edit-content" class="modal-body">
+                </div>
+                <div id="mod-footer" class="modal-footer">
+                    <button id="btnEditSubmit" type="button" class="btn btn-primary">Save</button>
+                    <button id="btnDeleteTask" type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
