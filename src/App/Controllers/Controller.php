@@ -12,6 +12,17 @@ class Controller
         $this->model = new Model();
     }
 
+    public function sendResponse($statusCode, $message, $data = null)
+    {
+        $response = array(
+            'status' => $statusCode,
+            'message' => $message,
+            'data' => $data
+        );
+        $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        echo $response;
+    }
+
     public function getErrors($data)
     {
         if (empty($data['name'])) {
@@ -30,12 +41,7 @@ class Controller
         $data = json_decode($data, true);
         $error = $this->getErrors($data);
         if ($error) {
-            $response = array(
-                'status' => '400',
-                'message' => $error
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('400', $error);
             return;
         }
         $deadline = explode("T", $data['deadline']);
@@ -47,19 +53,9 @@ class Controller
 
         $result = $this->model->insert($data);
         if ($result) {
-            $response = array(
-                'status' => '200',
-                'message' => 'Task successfully created'
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('200', 'Task successfully created');
         } else {
-            $response = array(
-                'status' => '400',
-                'message' => 'Creation of task failed'
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('400', 'Task creation failed');
         }
     }
 
@@ -70,20 +66,9 @@ class Controller
             foreach ($result as $key => $val) {
                 $result[$key] = $this->filter($val);
             }
-            $response = array(
-                'status' => '200',
-                'message' => 'OK',
-                'data' => $result
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('200', 'OK', $result);
         } else {
-            $response = array(
-                'status' => '400',
-                'message' => 'No tasks created'
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('400', 'No tasks created');
         }
     }
 
@@ -92,21 +77,9 @@ class Controller
         $result = $this->model->show($id);
         if (!empty($result)) {
             $result = $this->filter($result);
-            $response = array(
-                'status' => '200',
-                'message' => 'OK',
-                'data' => $result
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo ($response);
+            $this->sendResponse('200', 'OK', $result);
         } else {
-            $response = array(
-                'status' => '400',
-                'message' => 'Cant get information about this task',
-                'data' => $result
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('400', 'Cant get information about this task');
         }
     }
 
@@ -114,19 +87,9 @@ class Controller
     {
         $result = $this->model->delete($id);
         if ($result) {
-            $response = array(
-                'status' => '200',
-                'message' => 'Task deleted'
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('200', 'Success! Task deleted');
         } else {
-            $response = array(
-                'status' => '400',
-                'message' => 'Task deletion error'
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('400', 'Error! Task deletion error');
         }
     }
 
@@ -135,12 +98,7 @@ class Controller
         $task = json_decode($task, true);
         $error = $this->getErrors($task);
         if ($error) {
-            $response = array(
-                'status' => '400',
-                'message' => $error
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('400', $error);
             return;
         }
         $deadline = explode("T", $task['deadline']);
@@ -152,20 +110,9 @@ class Controller
 
         $result = $this->model->update($id, $task);
         if (!empty($result)) {
-            $response = array(
-                'status' => '200',
-                'message' => 'Update successful',
-                'data' => $result
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('200', 'Update successful!', $result);
         } else {
-            $response = array(
-                'status' => '400',
-                'message' => 'Cant update task information'
-            );
-            $response = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            echo $response;
+            $this->sendResponse('400', 'Cant update task information');
         }
     }
 

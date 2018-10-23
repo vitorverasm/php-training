@@ -1,4 +1,5 @@
 <?php
+
 use App\Controllers\Controller;
 
 require '../../../vendor/autoload.php';
