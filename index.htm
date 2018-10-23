@@ -37,42 +37,6 @@
                     },
                     success: function (result) {
                         result = JSON.parse(result);
-                        console.log(result);
-                        alert(result.message);
-                        if (result.status === '200') {
-                            window.location.href = "../../../index.php";
-                        }
-                    }
-                });
-
-            });
-        });
-        $(function () {
-            $('edit-form').on('submit', function (e) {
-                console.log('edit form submit')
-                return;
-                e.preventDefault();
-                var data = {
-                    name: $('#name').val(),
-                    description: $('#description').val(),
-                    deadline: $('#deadline').val(),
-                    priority: $('#priority').val(),
-                    status: $('#status').val()
-                }
-                //TODO: get task id
-                var taskId = $('edit-form').data("id");
-                console.log('taskid:',taskId);
-                $.ajax({
-                    type: 'POST',
-                    url: './src/App/Controllers/TaskController.php',
-                    data: {
-                        action: 'updateById',
-                        id:taskId,
-                        body: JSON.stringify(data)
-                    },
-                    success: function (result) {
-                        result = JSON.parse(result);
-                        console.log(result);
                         alert(result.message);
                         if (result.status === '200') {
                             window.location.href = "../../../index.php";
@@ -98,24 +62,33 @@
                 },
                 success: function (result) {
                     result = JSON.parse(result);
+                    var id = result.data.id;
+                    var name = result.data.name;
+                    var description = result.data.description;
+                    var priority = result.data.priority;
+                    var status = result.data.status;
+                    var datepicker = result.data.deadline.split(" ");
+                    datepicker = datepicker[0] + 'T' + datepicker[1];
+
                     var editForm = `
-                    <form id="edit-form" data-id="${result.data.description}">
+                    <form id="edit-form" data-id="${id}">
                         <div class="form-group">
                             <label>Task title:</label>
-                            <input id="name" type="text" class="form-control" name="name" value="${result.data.name}" placeholder="Enter the task name">
+                            <input id="name" type="text" class="form-control" name="name" value="${name}" placeholder="Enter the task name">
                         </div>
                         <div class="form-group">
                             <label>Description:</label>
                             <textarea id="description" name="description" class="form-control" cols="40" rows="5"
-                                maxlength="140" placeholder="Describe what to do...">${result.data.description}</textarea>
+                                maxlength="140" placeholder="Describe what to do...">${description}</textarea>
                         </div>
                         <div class="form-group">
                             <label>Deadline:</label>
-                            <input id="deadline" type="datetime-local" class="form-control" name="deadline" value="">
+                            <input id="deadline" type="datetime-local" class="form-control" name="deadline" value="${datepicker}">
                         </div>
                         <div class="form-group">
                             <label>Priority:</label>
                             <select id="priority" name="priority" class="form-control">
+                                <option selected value=${mapPriority(priority)}>Selected: ${priority}</option>
                                 <option value=4>Very high</option>
                                 <option value=3>High</option>
                                 <option value=2>Medium</option>
@@ -125,12 +98,10 @@
                         <div class="form-group">
                             <label>Status:</label>
                             <select id="status" name="status" class="form-control">
-                                <option value=0 selected>Ongoing</option>
+                                <option selected value=${mapStatus(status)}>Selected: ${status}</option>
+                                <option value=0>Ongoing</option>
                                 <option value=1>Done</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary" name="save">Save</button>
                         </div>
                     </form>
                     `;
@@ -138,39 +109,24 @@
                     $('#editModal').modal('show');
                 }
             });
-        }
-        function handleBtnInfo(btn) {
-            var row = $(btn).closest('tr');
-            var cols = $(row).find('td');
-            var taskId = cols[0].innerHTML;
-            $.ajax({
-                type: 'POST',
-                url: './src/App/Controllers/TaskController.php',
-                data: {
-                    action: 'getById',
-                    id: taskId
-                },
-                success: function (result) {
-                    result = JSON.parse(result);
-                    var taskList = `
-                    <ul id="taskList" class="list-group">
-                        <li class="list-group-item">${result.data.id}</li>
-                        <li class="list-group-item">${result.data.name}</li>
-                        <li class="list-group-item">${result.data.description}</li>
-                        <li class="list-group-item">${result.data.deadline}</li>
-                        <li class="list-group-item">${result.data.priority}</li>
-                        <li class="list-group-item">${result.data.status}</li>
-                    </ul>
-                    `;
-                    $('#infoModal').find('#info-content').html(taskList);
-                    $('#infoModal').modal('show');
-                }
-            });
+            function mapPriority(priorityLabel) {
+                var pr = 0;
+                priorityLabel == 'Very high' ? pr = 4 : pr;
+                priorityLabel == 'High' ? pr = 3 : pr;
+                priorityLabel == 'Medium' ? pr = 2 : pr;
+                priorityLabel == 'Low' ? pr = 1 : pr;
+                return pr;
+            }
+            function mapStatus(statusLabel) {
+                var sts = 0;
+                statusLabel == 'Ongoing' ? sts = 0 : sts;
+                statusLabel == 'Done' ? sts = 1 : sts;
+                return sts;
+            }
         }
         $(document).on('click', '#btnDeleteTask', function () {
-            var divContent = $(document).find('#taskList');
-            var list = $(divContent).find('li');
-            var taskId = list[0].innerHTML;
+            var form = $('form#edit-form');
+            var taskId = form.data("id");
             $.ajax({
                 type: 'POST',
                 url: './src/App/Controllers/TaskController.php',
@@ -181,8 +137,9 @@
                 success: function (result) {
                     result = JSON.parse(result);
                     alert(result.message);
-                    $('#infoModal').modal('hide');
-                    window.location.href = "../../../index.php";
+                    if (result.status === '200') {
+                        window.location.href = "../../../index.php";
+                    }
                 }
             });
         });
@@ -190,16 +147,32 @@
             var tableRef = document.getElementById('tasks');
             var newRow = tableRef.insertRow(1);
             var index = 0;
-            for (i in object) {
-                var newCell = newRow.insertCell(index);
-                var newText = document.createTextNode(object[i]);
-                newCell.appendChild(newText);
-                index++;
-            }
+
+            var newCell = newRow.insertCell(0);
+            var newText = document.createTextNode(object['id']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(1);
+            newText = document.createTextNode(object['name']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(2);
+            newText = document.createTextNode(object['deadline']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(3);
+            newText = document.createTextNode(object['priority']);
+            newCell.appendChild(newText);
+
+            newCell = newRow.insertCell(4);
+            newText = document.createTextNode(object['status']);
+            newCell.appendChild(newText);
+
             var options = newRow.insertCell(-1);
             options.innerHTML = `
-            <button onclick="handleBtnInfo(this)" type="button" class="btn btn-info">Info</button>
-            <button onclick="handleBtnEdit(this)" type="button" class="btn btn-warning">Edit</button>
+            <button onclick="handleBtnEdit(this)" type="button" class="btn btn-warning">
+                <i class="fa fa-pencil"></i> Edit
+            </button>
             `;
         }
         function loadTasks() {
@@ -217,6 +190,33 @@
                 }
             });
         }
+        $(document).on('click', '#btnEditSubmit', function () {
+            var form = $('form#edit-form');
+            var data = {
+                name: form.find('#name').val(),
+                description: form.find('#description').val(),
+                deadline: form.find('#deadline').val(),
+                priority: form.find('#priority').val(),
+                status: form.find('#status').val()
+            }
+            var taskId = form.data("id");
+            $.ajax({
+                type: 'POST',
+                url: './src/App/Controllers/TaskController.php',
+                data: {
+                    action: 'updateById',
+                    id: taskId,
+                    body: JSON.stringify(data)
+                },
+                success: function (result) {
+                    result = JSON.parse(result);
+                    alert(result.message);
+                    if (result.status === '200') {
+                        window.location.href = "../../../index.php";
+                    }
+                }
+            });
+        });
     </script>
 </head>
 
@@ -224,13 +224,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Task Manager</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a class="nav-links" href="#">Ongoing</a></li>
-                <li><a class="nav-links" href="#">Done</a></li>
-                <li><a class="nav-links" href="#">All</a></li>
-            </ul>
         </div>
     </nav>
     <div class="jumbotron jumbotron-fluid">
@@ -248,36 +241,17 @@
         <table id="tasks" class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">id</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Description</th>
                     <th scope="col">Deadline</th>
                     <th scope="col">Priority</th>
                     <th scope="col">Status</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
-    </div>
-
-    <div id="infoModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Task information</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="info-content" class="modal-body">
-                </div>
-                <div id="mod-footer" class="modal-footer">
-                    <button id="btnDeleteTask" type="button" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div id="createModal" class="modal fade" tabindex="-1" role="dialog">
@@ -335,12 +309,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">New Task</h5>
+                    <h5 class="modal-title">Task Info</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div id="edit-content" class="modal-body">
+                </div>
+                <div id="mod-footer" class="modal-footer">
+                    <button id="btnEditSubmit" type="button" class="btn btn-primary">Save</button>
+                    <button id="btnDeleteTask" type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
