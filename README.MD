@@ -187,11 +187,16 @@ This class uses the configuration file you've set up early to connect and execut
 
 ## View
 
+This file corresponds to the main app view.
+
+![enter image description here](https://lh3.googleusercontent.com/M81e0wze6vmlQ15s_OaOJl4dMvydhp1k3nxYEhx5rkSo1yJ5hxBji9Zznk6vOFojVIPQ8upRJgrX "mainappview")
+
 ## Comments
 
+This project was built for learning and practicing PHP, so it might have a lot of problems and non-practical issues, feel free to contact me and contribute! :)
 
 ## Author
 
-* **Vitor Veras de Moura** - [GitHub](https://github.com/vitor-veras) - [LinkedIn](linkedinaqui) - Email: vitorverasm@gmail.com
+* **Vitor Veras de Moura** - [GitHub](https://github.com/vitor-veras) - [LinkedIn](https://www.linkedin.com/in/vitor-veras/) - Email: vitorverasm@gmail.com
 
 
