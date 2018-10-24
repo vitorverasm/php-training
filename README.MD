@@ -9,6 +9,8 @@
  6. [Project Structure](#project-structure)
 	 - [Model](#model)
 	 - [Controllers](#controllers)
+	 	- [Controller.php](#controllerphp)
+		- [RoutesController.php](#routecontrollerphp)
 	 - [View](#view)
  7. [Comments](#comments)
  8. [Author](#author)
