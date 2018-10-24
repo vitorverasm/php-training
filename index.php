@@ -1,15 +1,11 @@
 <?php
 
-require 'vendor/autoload.php';
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 
 use App\Controllers\Controller;
-use App\Models\Model;
-use App\Views\View;
 
-$controller = new Controller;
-$model = new Model;
-$view = new View;
+$baseUrl = 'http://localhost:8000';
 
-echo $controller->index();
-echo $model->index();
-echo $view->index();
+require 'vendor/autoload.php';
+require_once './src/App/Views/index.htm';
